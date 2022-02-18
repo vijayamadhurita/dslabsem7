@@ -1,0 +1,118 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[8]:
+
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score,recall_score,precision_score,f1_score
+
+
+# In[9]:
+
+
+df = pd.read_csv('iris.csv')
+
+
+# In[10]:
+
+
+df.head()
+
+
+# In[11]:
+
+
+df['Classes']=df['Class'].map
+(
+{
+    'Iris-setosa':0,
+    'Iris-versicolor':1,
+    'Iris-virginica':2
+}
+
+)
+
+
+# In[12]:
+
+
+df.columns
+
+
+# In[13]:
+
+
+X = df [['Sepal_Length', ' Sepal_Width', ' Petal_Length', ' Petal_Width']]
+X
+
+
+# In[15]:
+
+
+Y = df [['Class']]
+Y
+
+
+# In[16]:
+
+
+X_train, X_test, Y_train,Y_test = train_test_split(X,Y,test_size=0.3,random_state=1)
+
+
+# In[17]:
+
+
+id3=DecisionTreeClassifier(criterion='entropy')
+cart = DecisionTreeClassifier(criterion='gini')
+
+
+# In[18]:
+
+
+id3_model = id3.fit(X_train,Y_train)
+cart_model=cart.fit(X_train,Y_train)
+
+
+# In[19]:
+
+
+y_id3=id3_model.predict(X_test)
+y_cart=cart_model.predict(X_test)
+
+
+# In[21]:
+
+
+accuracy = accuracy_score(Y_test,y_id3)
+recall=recall_score(Y_test,y_id3,average='micro')
+precision = precision_score(Y_test, y_id3,average='micro')
+f1 = f1_score(Y_test, y_id3,average='micro')
+print("Accuracy: ",accuracy)
+print("Error rate: ",1.0-accuracy)
+print("Recall: ",recall)
+print("Precision:", precision)
+print("F1 Score:", f1)
+
+
+# In[22]:
+
+
+accuracy = accuracy_score(Y_test,y_cart)
+recall=recall_score(Y_test,y_cart,average='micro')
+precision = precision_score(Y_test, y_cart,average='micro')
+f1 = f1_score(Y_test, y_cart,average='micro')
+print("Accuracy: ",accuracy)
+print("Error rate: ",1.0-accuracy)
+print("Recall: ",recall)
+print("Precision:", precision)
+print("F1 Score:", f1)
+
+
+# In[ ]:
+
+
+
+
