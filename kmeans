@@ -1,0 +1,102 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[17]:
+
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+from sklearn.mixture import GaussianMixture
+
+
+# In[18]:
+
+
+df = pd.read_csv('kmeansdata.csv')
+
+
+# In[19]:
+
+
+x1 = df['Distance_Feature'].values
+x2 = df['Speeding_Feature'].values
+
+
+# In[20]:
+
+
+df = np.array(list(zip(x1,x2))).reshape(len(x1),2)
+
+
+# In[21]:
+
+
+plt.plot()
+plt.xlim([0,100])
+plt.ylim([0,50])
+plt.title('Dataset')
+plt.scatter(x1,x2)
+plt.show()
+
+
+# In[22]:
+
+
+gmm = GaussianMixture(n_components=3)
+gmm.fit(df)
+em_predictions = gmm.predict(df)
+
+
+# In[23]:
+
+
+print('EM predictions')
+print(em_predictions)
+
+
+# In[24]:
+
+
+print("mean:\n",gmm.means_)
+print('\n')
+
+
+# In[25]:
+
+
+print('Covariances\n',gmm.covariances_)
+df
+
+
+# In[26]:
+
+
+plt.title("Exception Maximum")
+plt.scatter(df[:,0],df[:,1],c=em_predictions,s=50)
+plt.show()
+
+
+# In[29]:
+
+
+kmeans = KMeans(n_clusters = 3)
+kmeans.fit(df)
+print(kmeans.cluster_centers_)
+print(kmeans.labels_)
+
+
+# In[31]:
+
+
+plt.title("KMEANS")
+plt.scatter(X[:,0],X[:,1],c=kmeans.labels_,cmap='rainbow')
+plt.scatter(kmeans.cluster_centers_[:,0],kmeans.cluster_centers_[:,1],color='black')
+
+
+# In[ ]:
+
+
+
+
