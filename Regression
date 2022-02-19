@@ -1,0 +1,227 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# # Linear Regression
+
+# In[3]:
+
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.model_selection import train_test_split
+
+
+# In[4]:
+
+
+df = pd.read_csv("Advertising.csv")
+print(df.head())
+
+
+# In[5]:
+
+
+print(df.columns)
+
+
+# In[6]:
+
+
+print(df.drop(['Unnamed: 0'],axis=1))
+
+
+# In[7]:
+
+
+plt.figure(figsize = (16,8))
+plt.scatter(df['TV'],df['sales'],c='black')
+plt.xlabel("Money spent on TV ads ($)")
+plt.ylabel("Sales($)")
+plt.show()
+
+
+# In[8]:
+
+
+x = df['TV'].values.reshape(-1,1)
+y = df['sales'].values.reshape(-1,1)
+
+
+# In[9]:
+
+
+x_train,x_test,y_train,y_test = train_test_split(x,y,test_size=0.3)
+reg = LinearRegression()
+reg.fit(x_train,y_train)
+
+
+# In[10]:
+
+
+print("Slope: ",reg.coef_[0][0])
+print("Intercept: ",reg.intercept_[0])
+print("The linear model is : Y = {:.5}+{:.5}X".format(reg.intercept_[0],reg.coef_[0][0]))
+
+
+# In[11]:
+
+
+predictions = reg.predict(x_test)
+
+
+# In[17]:
+
+
+
+plt.figure(figsize=(16, 8))
+plt.scatter(
+ x_test,
+ y_test,
+ c='black'
+)
+plt.plot(
+ x_test,
+ predictions,
+ c='blue',
+ linewidth=2
+)
+plt.xlabel("Money spent on TV ads ($)")
+plt.ylabel("Sales ($)")
+plt.show()
+
+
+# In[20]:
+
+
+rmse = np.sqrt(mean_squared_error(y_test,predictions))
+print("Root mean squared Error = ",rmse)
+
+
+# In[21]:
+
+
+r2 = r2_score(y_test,predictions)
+print("R2 = ",r2)
+
+
+# # Logistic Regression
+
+# In[2]:
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import classification_report, confusion_matrix
+
+
+# In[4]:
+
+
+x = np.arange(10).reshape(-1,1)
+y = np.array([0,0,0,0,1,1,1,1,1,1])
+
+
+# In[5]:
+
+
+print(x)
+print('\n')
+
+
+# In[6]:
+
+
+
+print(y)
+print('\n')
+
+
+# In[7]:
+
+
+model = LogisticRegression(solver='liblinear',random_state=0)
+
+
+# In[8]:
+
+
+print(model.fit(x,y))
+print('\n')
+
+
+# In[9]:
+
+
+print(model.classes_)
+print('\n')
+
+
+# In[11]:
+
+
+print(model.intercept_)
+print('\n')
+
+
+# In[12]:
+
+
+print(model.coef_)
+print('\n')
+
+
+# In[13]:
+
+
+print(model.predict_proba(x))
+print('\n')
+
+
+# In[14]:
+
+
+
+print(model.coef_)
+print('\n')
+
+
+# In[15]:
+
+
+print(model.score(x,y))
+print('\n')
+
+
+# In[16]:
+
+
+confusion_matrix(y,model.predict(x))
+
+
+# In[17]:
+
+
+cm = confusion_matrix(y,model.predict(x))
+
+
+# In[18]:
+
+
+print(cm)
+
+
+# In[19]:
+
+
+print(classification_report(y,model.predict(x)))
+
+
+# In[ ]:
+
+
+
+
